@@ -3,10 +3,8 @@ async function fetchData(): Promise<void> {
     const response = await fetch("https://esp32-f0f56-default-rtdb.asia-southeast1.firebasedatabase.app/.json");
     const data = await response.json();
 
-    // Extract sensor data
     const sensorData = data.sensor;
 
-    // Update HTML elements
     const suhuElement = document.getElementById("suhu");
     const kelembabanElement = document.getElementById("kelembaban");
 
@@ -19,8 +17,6 @@ async function fetchData(): Promise<void> {
   }
 }
 
-// Call fetchData on page load
 fetchData();
 
-// Refresh data every 10 seconds
-setInterval(fetchData, 10000);
+ setInterval(fetchData, 10000);
