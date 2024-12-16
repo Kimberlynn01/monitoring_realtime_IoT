@@ -4,97 +4,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Sensor</title>
+    <title>Monitoring Sensor</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .chart-container {
-            width: 100%;
-            height: 300px;
+            width: 150px;
+            height: 150px;
+            margin: auto;
         }
     </style>
 </head>
 
 <body class="bg-gray-100 flex justify-center items-center h-screen">
-
     <div class="card max-w-lg w-full bg-white shadow-lg rounded-lg p-6">
-        <h2 class="text-3xl font-semibold text-center text-gray-800 mb-6">Monitoring Kelembaban Tanah</h2>
+        <h2 class="text-3xl font-semibold text-center text-gray-800 mb-6">Monitoring Sensor</h2>
 
-        <div class="mb-6 text-center">
-            <p class="text-xl text-gray-700"><strong>Suhu:</strong> <span id="suhu"
-                    class="font-bold text-blue-600">--</span>&#8451;</p>
-            <p class="text-xl text-gray-700"><strong>Kelembaban:</strong> <span id="kelembaban"
-                    class="font-bold text-green-600">--</span>%</p>
-        </div>
+        <div class="flex justify-around items-center mb-6">
+            <!-- Suhu Circular Progress -->
+            <div>
+                <h3 class="text-lg font-semibold text-gray-700 text-center mb-2">Suhu</h3>
+                <div class="chart-container">
+                    <canvas id="suhuChart"></canvas>
+                </div>
+                <p id="suhuValue" class="text-center font-bold text-blue-600 text-xl mt-2">--%</p>
+            </div>
 
-        <div class="chart-container mb-6">
-            <canvas id="sensorChart"></canvas>
+            <!-- Kelembaban Circular Progress -->
+            <div>
+                <h3 class="text-lg font-semibold text-gray-700 text-center mb-2">Kelembaban</h3>
+                <div class="chart-container">
+                    <canvas id="kelembabanChart"></canvas>
+                </div>
+                <p id="kelembabanValue" class="text-center font-bold text-green-600 text-xl mt-2">--%</p>
+            </div>
         </div>
     </div>
 
     <script src="./dist/index.js"></script>
-
-    <script>
-        const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
-        const suhuData = [30, 28, 31, 27, 29, 32];
-        const kelembabanData = [60, 65, 70, 75, 80, 85];
-
-        const ctx = document.getElementById('sensorChart').getContext('2d');
-
-        const sensorChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Suhu (°C)',
-                    data: suhuData,
-                    borderColor: '#4CAF50',
-                    backgroundColor: 'rgba(76, 175, 80, 0.2)',
-                    fill: true,
-                    tension: 0.4
-                },
-                {
-                    label: 'Kelembaban (%)',
-                    data: kelembabanData,
-                    borderColor: '#2196F3',
-                    backgroundColor: 'rgba(33, 150, 243, 0.2)',
-                    fill: true,
-                    tension: 0.4
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function (tooltipItem) {
-                                return tooltipItem.dataset.label + ': ' + tooltipItem.raw;
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Months'
-                        }
-                    },
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Values'
-                        }
-                    }
-                }
-            }
-        });
-    </script>
-
 </body>
 
 </html>
