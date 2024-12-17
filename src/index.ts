@@ -52,7 +52,7 @@ function displayData(suhu: number, kelembaban: number): void {
   updateCircularChart(kelembabanChart, kelembaban);
 
   // Update displayed text with 1 decimal point
-  if (suhuValueElement) suhuValueElement.textContent = `${suhu.toFixed(1)}%`;
+  if (suhuValueElement) suhuValueElement.textContent = `${suhu.toFixed(1)}°`;
   if (kelembabanValueElement) kelembabanValueElement.textContent = `${kelembaban.toFixed(1)}%`;
 }
 
@@ -85,8 +85,7 @@ function createCircularChart(canvasId: string, color: string): Chart {
   });
 }
 
-
 function updateCircularChart(chart: Chart, value: number): void {
-  chart.data.datasets![0].data = [value, 100 - value]; 
+  chart.data.datasets![0].data = [value, 100 - value];
   chart.update();
 }
