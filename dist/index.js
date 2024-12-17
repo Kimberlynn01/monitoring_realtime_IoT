@@ -93,7 +93,7 @@ function displayData(suhu, kelembaban) {
     updateCircularChart(kelembabanChart, kelembaban);
     // Update displayed text with 1 decimal point
     if (suhuValueElement)
-        suhuValueElement.textContent = "".concat(suhu.toFixed(1), "%");
+        suhuValueElement.textContent = "".concat(suhu.toFixed(1), "\u00B0");
     if (kelembabanValueElement)
         kelembabanValueElement.textContent = "".concat(kelembaban.toFixed(1), "%");
 }
