@@ -4,11 +4,13 @@ const maxStaleTime = 10 * 1000; // 10 seconds
 // Circular Chart Instances
 let suhuChart: Chart;
 let kelembabanChart: Chart;
+let kelembabanTanahChart: Chart;
 
 document.addEventListener("DOMContentLoaded", () => {
   // Initialize charts after DOM loaded
   suhuChart = createCircularChart("suhuChart", "#2196F3");
   kelembabanChart = createCircularChart("kelembabanChart", "#4CAF50");
+  kelembabanTanahChart = createCircularChart("kelembabanTanahChart", "#203c69");
 
   // Start fetching data
   fetchData();
@@ -25,7 +27,7 @@ async function fetchData() {
       const sensorData = data.sensor;
       const currentTimestamp = Date.now();
 
-      displayData(parseFloat(sensorData.suhu), parseFloat(sensorData.kelembaban));
+      displayData(parseFloat(sensorData.suhu), parseFloat(sensorData.kelembaban), parseFloat(sensorData.kelembaban_tanah));
 
       lastUpdate = currentTimestamp;
     }
@@ -39,21 +41,24 @@ function updateDisplayIfStale() {
   const timeSinceLastUpdate = currentTimestamp - lastUpdate;
 
   if (timeSinceLastUpdate > maxStaleTime) {
-    displayData(0, 0); // Output 0 if data is stale
+    displayData(0, 0, 0);
   }
 }
 
-function displayData(suhu: number, kelembaban: number): void {
+function displayData(suhu: number, kelembaban: number, kelembaban_tanah: number): void {
   const suhuValueElement = document.getElementById("suhuValue");
   const kelembabanValueElement = document.getElementById("kelembabanValue");
+  const kelembabanTanahValueElement = document.getElementById("kelembabanTanahValue");
 
   // Update chart values
   updateCircularChart(suhuChart, suhu);
   updateCircularChart(kelembabanChart, kelembaban);
+  updateCircularChart(kelembabanTanahChart, kelembaban_tanah);
 
   // Update displayed text with 1 decimal point
   if (suhuValueElement) suhuValueElement.textContent = `${suhu.toFixed(1)}°`;
   if (kelembabanValueElement) kelembabanValueElement.textContent = `${kelembaban.toFixed(1)}%`;
+  if (kelembabanTanahValueElement) kelembabanTanahValueElement.textContent = `${kelembaban_tanah.toFixed(1)}%`;
 }
 
 function createCircularChart(canvasId: string, color: string): Chart {

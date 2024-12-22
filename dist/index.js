@@ -40,10 +40,12 @@ var maxStaleTime = 10 * 1000; // 10 seconds
 // Circular Chart Instances
 var suhuChart;
 var kelembabanChart;
+var kelembabanTanahChart;
 document.addEventListener("DOMContentLoaded", function () {
     // Initialize charts after DOM loaded
     suhuChart = createCircularChart("suhuChart", "#2196F3");
     kelembabanChart = createCircularChart("kelembabanChart", "#4CAF50");
+    kelembabanTanahChart = createCircularChart("kelembabanTanahChart", "#203c69");
     // Start fetching data
     fetchData();
     setInterval(fetchData, 1000);
@@ -65,7 +67,7 @@ function fetchData() {
                     if (data && data.sensor) {
                         sensorData = data.sensor;
                         currentTimestamp = Date.now();
-                        displayData(parseFloat(sensorData.suhu), parseFloat(sensorData.kelembaban));
+                        displayData(parseFloat(sensorData.suhu), parseFloat(sensorData.kelembaban), parseFloat(sensorData.kelembaban_tanah));
                         lastUpdate = currentTimestamp;
                     }
                     return [3 /*break*/, 4];
@@ -82,20 +84,24 @@ function updateDisplayIfStale() {
     var currentTimestamp = Date.now();
     var timeSinceLastUpdate = currentTimestamp - lastUpdate;
     if (timeSinceLastUpdate > maxStaleTime) {
-        displayData(0, 0); // Output 0 if data is stale
+        displayData(0, 0, 0);
     }
 }
-function displayData(suhu, kelembaban) {
+function displayData(suhu, kelembaban, kelembaban_tanah) {
     var suhuValueElement = document.getElementById("suhuValue");
     var kelembabanValueElement = document.getElementById("kelembabanValue");
+    var kelembabanTanahValueElement = document.getElementById("kelembabanTanahValue");
     // Update chart values
     updateCircularChart(suhuChart, suhu);
     updateCircularChart(kelembabanChart, kelembaban);
+    updateCircularChart(kelembabanTanahChart, kelembaban_tanah);
     // Update displayed text with 1 decimal point
     if (suhuValueElement)
         suhuValueElement.textContent = "".concat(suhu.toFixed(1), "\u00B0");
     if (kelembabanValueElement)
         kelembabanValueElement.textContent = "".concat(kelembaban.toFixed(1), "%");
+    if (kelembabanTanahValueElement)
+        kelembabanTanahValueElement.textContent = "".concat(kelembaban_tanah.toFixed(1), "%");
 }
 function createCircularChart(canvasId, color) {
     var canvas = document.getElementById(canvasId);
