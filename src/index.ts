@@ -1,18 +1,11 @@
 let lastUpdate = 0;
-const maxStaleTime = 10 * 1000; // 10 seconds
+const maxStaleTime = 10 * 1000;
 
-// Circular Chart Instances
-let suhuChart: Chart;
-let kelembabanChart: Chart;
 let kelembabanTanahChart: Chart;
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Initialize charts after DOM loaded
-  suhuChart = createCircularChart("suhuChart", "#2196F3");
-  kelembabanChart = createCircularChart("kelembabanChart", "#4CAF50");
   kelembabanTanahChart = createCircularChart("kelembabanTanahChart", "#203c69");
 
-  // Start fetching data
   fetchData();
   setInterval(fetchData, 1000);
   setInterval(updateDisplayIfStale, 1000);
@@ -27,7 +20,7 @@ async function fetchData() {
       const sensorData = data.sensor;
       const currentTimestamp = Date.now();
 
-      displayData(parseFloat(sensorData.suhu), parseFloat(sensorData.kelembaban), parseFloat(sensorData.kelembaban_tanah));
+      displayData(parseFloat(sensorData.kelembaban_tanah));
 
       lastUpdate = currentTimestamp;
     }
@@ -41,23 +34,15 @@ function updateDisplayIfStale() {
   const timeSinceLastUpdate = currentTimestamp - lastUpdate;
 
   if (timeSinceLastUpdate > maxStaleTime) {
-    displayData(0, 0, 0);
+    displayData(0);
   }
 }
 
-function displayData(suhu: number, kelembaban: number, kelembaban_tanah: number): void {
-  const suhuValueElement = document.getElementById("suhuValue");
-  const kelembabanValueElement = document.getElementById("kelembabanValue");
+function displayData(kelembaban_tanah: number): void {
   const kelembabanTanahValueElement = document.getElementById("kelembabanTanahValue");
 
-  // Update chart values
-  updateCircularChart(suhuChart, suhu);
-  updateCircularChart(kelembabanChart, kelembaban);
   updateCircularChart(kelembabanTanahChart, kelembaban_tanah);
 
-  // Update displayed text with 1 decimal point
-  if (suhuValueElement) suhuValueElement.textContent = `${suhu.toFixed(1)}°`;
-  if (kelembabanValueElement) kelembabanValueElement.textContent = `${kelembaban.toFixed(1)}%`;
   if (kelembabanTanahValueElement) kelembabanTanahValueElement.textContent = `${kelembaban_tanah.toFixed(1)}%`;
 }
 
